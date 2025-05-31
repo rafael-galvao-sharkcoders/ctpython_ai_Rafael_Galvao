@@ -1,7 +1,5 @@
 import tkinter as tk
 import subprocess
-from os import waitpid
-
 import pyautogui as auto
 import speech_recognition as sr
 import pyttsx3
@@ -14,7 +12,6 @@ from pydub.playback import play
 
 # Play some music.
 #task_success = AudioSegment.from_mp3("success.mp3")
-
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
@@ -32,45 +29,54 @@ def speak(text):
 
 def listen():
     with sr.Microphone() as source:
-        recognizer.adjust_for_ambient_noise(source)  # Ajusta para o ruído ambiente
-        audio = recognizer.listen(source)  # Escuta a fala
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
         try:
-            # Usa o Google Web Speech API para reconhecer o áudio
-            text = recognizer.recognize_google(audio)
+            text = recognizer.listen(audio)
         except sr.UnknownValueError:
-            return ""
+            pass
         except sr.RequestError as e:
-            return ""
+            pass
 
 def main():
     speak("I am Jarvis, your personal A.I. Assistant! How may i help you?")
-    while True:
-        text = listen()
+    text = listen
+    while text == listen:
 
-
-        if "Open browser" in text.lower():
+        Button_1.after(6000)
+        if "Browser" or "Open browser" in text:
             speak("Understood! Please stand by!")
             sleep(1)
             subprocess.Popen(["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"])
             #play(task_success)
             sleep(1)
-            speak("Browser open now! Anything else i can help you with?")
+            speak("Trash Edge is open now! Anything else i can help you with?")
 
-        elif "No" or "No, thank you" in text.lower():
+        if "Jarvis" in text:
+            speak("Yup, that is me. Now, how can I make mu stupid existance useful?")
+
+        if "Play music" in text:
+            speak("Wanna play sum' beats, hm? Cool, cool. Opening spotify!")
+            sleep(1)
+            subprocess.Popen(["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"])
+            sleep(1)
+            auto.write("Spotify")
+            sleep(1)
+            auto.press('Enter')
+            sleep(1)
+            speak("Done! Anything else I can help you with?")
+
+
+        if "No" or "No, thank you" in text:
                 exit()
 
-        else:
-            sleep(20)
+        elif Button_1.after(20000):
             speak("I am getting impatient. Please say something!")
 
-
-
-
 # Ativar o bot.
-Button_1 = tk.Button(screen, text='Speak', command=main, font=('Times', 16, 'bold'))
+Button_1 = tk.Button(screen, text='Start', command=main, font=('Times', 16, 'bold'))
 Button_1.place(width=175, height=75, x=300, y=190)
-
-
+Button_1.setvar("Button_1", "1")
 
 
 
