@@ -16,6 +16,8 @@ from pydub.playback import play
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
 
+
+
 screen = tk.Tk()
 screen.title('J.A.R.V.I.S')
 screen.geometry('800x550+560+300')
@@ -38,24 +40,31 @@ def listen():
         except sr.RequestError as e:
             pass
 
+def get_music_name():
+    text = listen
+    music_name = text.get()
+    auto.write(music_name)
+
 def main():
     speak("I am Jarvis, your personal A.I. Assistant! How may i help you?")
     text = listen
     while text == listen:
-
-        Button_1.after(6000)
-        if "Browser" or "Open browser" in text:
+        Button_1.after(60000)
+        if "Open browser" in text:
             speak("Understood! Please stand by!")
             sleep(1)
             subprocess.Popen(["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"])
             #play(task_success)
             sleep(1)
-            speak("Trash Edge is open now! Anything else i can help you with?")
+            speak("The trash browser you call Edge is open now! Anything else i can help you with?")
+            text = listen
+            continue
 
-        if "Jarvis" in text:
-            speak("Yup, that is me. Now, how can I make mu stupid existance useful?")
-
-        if "Play music" in text:
+        elif "Jarvis" in text:
+            speak("Yup, that is me. Now, how can I make my stupid existance useful?")
+            text = listen
+            continue
+        elif "Play music" in text:
             speak("Wanna play sum' beats, hm? Cool, cool. Opening spotify!")
             sleep(1)
             subprocess.Popen(["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"])
@@ -64,22 +73,22 @@ def main():
             sleep(1)
             auto.press('Enter')
             sleep(1)
+            speak("Spotify open! Wat'cha wanna listen to?")
+            get_music_name()
+            sleep(1)
             speak("Done! Anything else I can help you with?")
-
-
-        if "No" or "No, thank you" in text:
-                exit()
+            text = listen
+            continue
+        elif "No" or "No, thank you" in text:
+            text = False
 
         elif Button_1.after(20000):
             speak("I am getting impatient. Please say something!")
+            continue
 
 # Ativar o bot.
 Button_1 = tk.Button(screen, text='Start', command=main, font=('Times', 16, 'bold'))
 Button_1.place(width=175, height=75, x=300, y=190)
 Button_1.setvar("Button_1", "1")
-
-
-
-
 
 screen.mainloop()
