@@ -1,0 +1,116 @@
+import tkinter as tk
+import subprocess
+import webbrowser
+import cv2
+import pyautogui as auto
+import speech_recognition as sr
+import pyttsx3
+import subprocess
+from time import sleep
+from tkinter import *
+import googletrans as translator
+
+
+# Main functions of the code.
+recognizer = sr.Recognizer()
+engine = pyttsx3.init()
+
+# Main screen.
+screen = tk.Tk()
+screen.title('J.A.R.V.I.S')
+screen.geometry('800x550+560+300')
+screen.wm_resizable(width=False, height=False)
+
+# Bot stuff.
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+
+def listen():
+    with sr.Microphone() as source:
+        recognizer.adjust_for_ambient_noise(source)
+        print("Listening...")
+        audio = recognizer.listen(source)
+
+        try:
+            text = recognizer.recognize_google(audio)
+            print(f"Recognized: {text}")
+            return text.lower()  # Convert to lowercase for easier matching
+        except sr.UnknownValueError:
+            print("Sorry, I did not understand that.")
+            return ""  # Return empty string if speech was unintelligible
+        except sr.RequestError as e:
+            print(f"Could not request results; {e}")
+            return ""  # Return empty string on API failure
+
+def play_music(text):
+    speak("Alrighty! Opening Spotify!")
+    sleep(1)
+    webbrowser.open("https://open.spotify.com/search")
+    sleep(1)
+    auto.press('control' 'k')
+    sleep(1)
+    speak("What'cha wanna listen?")
+    text = listen()
+    sleep(1)
+    auto.write(f"{text} spotify")
+    sleep(1)
+    speak("Here you go! Anything else I can help ya with?")
+
+# The main function(The one that gives the bot actions)
+def main():
+    speak("I am Jarvis, your personal A.I. Assistant! How may i help you?")
+    text = listen()
+
+    # Button_1.after(60000)
+    if "open browser" in text:
+        speak("Understood! Please stand by!")
+        sleep(1)
+        subprocess.Popen(["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"])
+        # play(task_success)
+        sleep(1)
+        speak("The trash browser you call Edge is open now! Anything else i can help you with?")
+
+
+    # elif "Jarvis" in text:
+    #     speak("Yup, that is me. Now, how can I make my stupid existence any useful?")
+    #     text = listen
+    #     continue
+
+    elif "play music" in text:
+        play_music(text)
+
+    elif "you are useless" in text:
+        speak("Ow. That hurts my feelings. Can't you be nicer?")
+        sleep(1)
+        speak("Just kidding, you are the useless here! Ha. Ha. Ha. Ha.")
+
+    #elif "translate" in text:
+
+    elif "sing" in text:
+        webbrowser.open(f'https://genius.com/search?q={text}')
+        sleep(1)
+        speak("Alrighty!")
+        sleep(1)
+        speak("Failure.")
+
+    elif "what is nine plus ten?" in text:
+        speak("Twenty one?")
+
+    elif "No" or "No, thank you" in text:
+        text = ""
+
+    # elif Button_1.after(20000):
+    #     speak("I am getting impatient. Please say something!")
+
+    else:
+        speak("I didn't understand.")
+
+# Activate J.A.R.V.I.S
+Button_1 = tk.Button(screen, text='Start', command=main, font=('Times', 16, 'bold'))
+Button_1.place(width=175, height=75, x=300, y=190)
+Button_1.setvar("self", "10")
+
+screen.mainloop()
