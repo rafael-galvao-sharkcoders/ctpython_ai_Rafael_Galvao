@@ -28,6 +28,7 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
     engine.setProperty('rate', 150)
+    engine.setProperty('voice', voices[0].id)
 
 
 
