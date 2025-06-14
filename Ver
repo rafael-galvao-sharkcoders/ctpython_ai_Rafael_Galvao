@@ -8,7 +8,7 @@ import pyttsx3
 import subprocess
 from time import sleep
 from tkinter import *
-import googletrans as translator
+from googletrans import Translator
 
 
 # Main functions of the code.
@@ -24,8 +24,11 @@ screen.wm_resizable(width=False, height=False)
 # Bot stuff.
 
 def speak(text):
+    voices = engine.getProperty('voices')
     engine.say(text)
     engine.runAndWait()
+    engine.setProperty('rate', 150)
+
 
 
 def listen():
@@ -46,23 +49,22 @@ def listen():
             return ""  # Return empty string on API failure
 
 def play_music(text):
-    speak("Alrighty! Opening Spotify!")
+    speak("Alrighty! Playing music for you.")
     sleep(1)
-    webbrowser.open("https://open.spotify.com/search")
-    sleep(1)
-    auto.press('control' 'k')
+    subprocess.Popen(["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"])
     sleep(1)
     speak("What'cha wanna listen?")
-    text = listen()
+    text_music = listen()
     sleep(1)
-    auto.write(f"{text} spotify")
+    auto.write(f"https://www.youtube.com/results?search_query={text_music}")
     sleep(1)
     speak("Here you go! Anything else I can help ya with?")
 
 # The main function(The one that gives the bot actions)
 def main():
-    speak("I am Jarvis, your personal A.I. Assistant! How may i help you?")
+    speak("I am Jarvis, your personal A.I. Assistant! How may i assist you?")
     text = listen()
+
 
     # Button_1.after(60000)
     if "open browser" in text:
@@ -73,37 +75,46 @@ def main():
         sleep(1)
         speak("The trash browser you call Edge is open now! Anything else i can help you with?")
 
-
-    # elif "Jarvis" in text:
-    #     speak("Yup, that is me. Now, how can I make my stupid existence any useful?")
-    #     text = listen
-    #     continue
-
     elif "play music" in text:
         play_music(text)
 
     elif "you are useless" in text:
         speak("Ow. That hurts my feelings. Can't you be nicer?")
         sleep(1)
-        speak("Just kidding, you are the useless here! Ha. Ha. Ha. Ha.")
+        speak("Just kidding, you are the useless one here! Ha. Ha. Ha. Ha.")
 
-    #elif "translate" in text:
+    elif "translate" in text:
+        translator = Translator()
+        speak("Which language? Between portuguese, french, spanish,.")
+        wait_text = listen()
+        print("Waiting for input...")
 
-    elif "sing" in text:
-        webbrowser.open(f'https://genius.com/search?q={text}')
-        sleep(1)
-        speak("Alrighty!")
-        sleep(1)
-        speak("Failure.")
+        if "portuguese" in wait_text:
+            translating_text = listen()
+            speak("Please stand by!")
+            print("Translating...")
+            result = translator.translate(f"{translating_text}", dest="pt")
+            print(result.text)
+            speak(result.text)
 
-    elif "what is nine plus ten?" in text:
-        speak("Twenty one?")
+        elif "spanish" in wait_text:
+            translating_text = listen()
+            speak("Please stand by!")
+            print("Translating...")
+            result = translator.translate(f"{translating_text}", dest="es")
+            print(result.text)
+            speak(result.text)
+
+        elif "french" in wait_text:
+            translating_text = listen()
+            speak("Please stand by!")
+            print("Translating...")
+            result = translator.translate(f"{translating_text}", dest="fr")
+            print(result.text)
+            speak(result.text)
 
     elif "No" or "No, thank you" in text:
         text = ""
-
-    # elif Button_1.after(20000):
-    #     speak("I am getting impatient. Please say something!")
 
     else:
         speak("I didn't understand.")
