@@ -86,7 +86,7 @@ def main():
 
     elif "translate" in text:
         translator = Translator()
-        speak("Which language? Between portuguese, french, spanish,.")
+        speak("Which language? Between portuguese, french, spanish or german.")
         wait_text = listen()
         print("Waiting for input...")
 
@@ -111,6 +111,14 @@ def main():
             speak("Please stand by!")
             print("Translating...")
             result = translator.translate(f"{translating_text}", dest="fr")
+            print(result.text)
+            speak(result.text)
+
+        if "german" in wait_text:
+            translating_text = listen()
+            speak("Please stand by!")
+            print("Translating...")
+            result = translator.translate(f"{translating_text}", dest="de")
             print(result.text)
             speak(result.text)
 
